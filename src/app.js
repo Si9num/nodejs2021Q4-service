@@ -17,6 +17,13 @@ const {
   BoardPut,
   BoardDel,
 } = require('./resources/boards/board.model');
+const {
+  TaskGet,
+  TaskPost,
+  TaskGetId,
+  TaskPut,
+  TaskDel,
+} = require('./resources/tasks/task.model');
 
 const app = fastify;
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
@@ -41,5 +48,11 @@ app.get('/boards/:id', BoardGetId);
 app.post('/boards', BoardPost);
 app.put('/boards/:id', BoardPut);
 app.delete('/boards/:id', BoardDel);
+
+app.get('/boards/:id/tasks', TaskGet);
+app.get('/boards/:id/tasks/:id', TaskGetId);
+app.post('/boards/:id/tasks', TaskPost);
+app.put('/boards/:id/tasks/:id', TaskPut);
+app.delete('/boards/:id/tasks/:id', TaskDel);
 
 module.exports = app;
