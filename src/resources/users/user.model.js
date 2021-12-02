@@ -1,22 +1,93 @@
-const uuid = require('uuid');
+const {
+  getUser,
+  postUser,
+  getIdUser,
+  putUser,
+  delUser,
+} = require('./user.router');
 
-class User {
-  constructor({
-    id = uuid(),
-    name = 'USER',
-    login = 'user',
-    password = 'P@55w0rd'
-  } = {}) {
-    this.id = id;
-    this.name = name;
-    this.login = login;
-    this.password = password;
-  }
+const UserGet = {
+  schema: {
+    response: {
+      200: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' },
+            name: { type: 'string' },
+            login: { type: 'string' },
+            password: { type: 'string' },
+          },
+        },
+      },
+    },
+  },
+  handler: getUser,
+};
+const UserGetId = {
+  schema: {
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' },
+          login: { type: 'string' },
+          password: { type: 'string' },
+        },
+      },
+    },
+  },
+  handler: getIdUser,
+};
+const UserPost = {
+  schema: {
+    response: {
+      201: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' },
+          login: { type: 'string' },
+          // password: { type: 'string' },
+        },
+      },
+    },
+  },
+  handler: postUser,
+};
+const UserPut = {
+  schema: {
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' },
+          login: { type: 'string' },
+          password: { type: 'string' },
+        },
+      },
+    },
+  },
+  handler: putUser,
+};
+const UserDel = {
+  schema: {
+    response: {
+      200: {
+        type: 'object',
+        properties: {
+          id: { type: 'string' },
+          name: { type: 'string' },
+          login: { type: 'string' },
+          password: { type: 'string' },
+        },
+      },
+    },
+  },
+  handler: delUser,
+};
 
-  static toResponse(user) {
-    const { id, name, login } = user;
-    return { id, name, login };
-  }
-}
-
-module.exports = User;
+module.exports = { UserGet, UserPost, UserGetId, UserPut, UserDel };

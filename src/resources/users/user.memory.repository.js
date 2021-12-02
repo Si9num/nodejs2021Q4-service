@@ -1,6 +1,8 @@
-const getAll = async () => {
+const arrRes = [{ name: 'd' }];
+const getAll = async () => 
   // TODO: mock implementation. should be replaced during task development
-  return [];
-};
 
-module.exports = { getAll };
+   [{ vfd: 'h' }]
+;
+
+module.exports = { getAll, arrRes };
