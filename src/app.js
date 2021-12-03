@@ -28,9 +28,6 @@ const {
 const app = fastify;
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 
-// app.use(express.json());
-
-// app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.register(swaggerUI, swaggerDocument);
 
 app.get('/', (req, res) => {

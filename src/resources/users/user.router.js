@@ -1,17 +1,16 @@
 const { v4: uuidv4 } = require('uuid');
 
-const { arrRes } = require('./user.memory.repository');
+const arrRes = require('./user.memory.repository');
 
-async function getUser(req, res) {
+function getUser(req, res) {
   res.send(arrRes);
 }
-async function getIdUser(req, res) {
+function getIdUser(req, res) {
   const result = arrRes.find((record) => record.id === req.params.id);
 
   res.send(result);
 }
-async function postUser(req, res) {
-  // const users = await usersService.getAll();
+function postUser(req, res) {
   const name = req.body;
 
   Object.defineProperty(name, 'id', {
@@ -24,7 +23,7 @@ async function postUser(req, res) {
 
   res.code(201).send(name);
 }
-async function putUser(req, res) {
+function putUser(req, res) {
   const updated = req.body;
   Object.defineProperty(updated, 'id', {
     value: `${req.params.id}`,
@@ -36,7 +35,7 @@ async function putUser(req, res) {
 
   res.send(updated);
 }
-async function delUser(req, res) {
+function delUser(req, res) {
   const result = arrRes.find((record) => record.id === req.params.id);
   arrRes.splice(arrRes.indexOf(result), 1);
 
