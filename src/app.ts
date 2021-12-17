@@ -2,14 +2,14 @@ import swaggerUI from 'fastify-swagger';
 import path from 'path';
 import YAML from 'yamljs';
 
-import fastify from 'fastify';
+import fastify, { FastifyReply } from 'fastify';
 import {
   UserGet,
   UserPost,
   UserGetId,
   UserPut,
   UserDel,
-} from "./resources/users/user.model";
+} from './resources/users/user.model';
 import {
   BoardGet,
   BoardPost,
@@ -27,12 +27,12 @@ import {
 
 // const fastify = require('fastify')({ logger: true });
 
-const app = fastify();
+const app = fastify({ logger: true });
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 
 app.register(swaggerUI, swaggerDocument);
 
-app.get('/', (req, res) => {
+app.get('/', (req, res: FastifyReply) => {
   res.send('Service is running!');
 });
 

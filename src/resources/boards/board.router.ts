@@ -1,19 +1,26 @@
 import { v4 as uuidv4 } from 'uuid';
 
+import { FastifyReply, FastifyRequest } from 'fastify';
 import { arrResBoard } from './board.memory.repository';
 import { arrResTask } from '../tasks/task.memory.repository';
 
-function getBoard(req, res) {
+interface request extends FastifyRequest {
+  body: { id: string; title: string; column: object };
+  id: string;
+  params: { id: string };
+}
+
+function getBoard(req: FastifyRequest, res: FastifyReply) {
   res.send(arrResBoard);
 }
-function getIdBoard(req, res) {
+function getIdBoard(req: request, res: FastifyReply) {
   const result = arrResBoard.find((record) => record.id === req.params.id);
   if (!result) {
     res.code(404).send('not found');
   }
   res.send(result);
 }
-function postBoard(req, res) {
+function postBoard(req: request, res: FastifyReply) {
   const name = req.body;
 
   Object.defineProperty(name, 'id', {
@@ -26,20 +33,20 @@ function postBoard(req, res) {
 
   res.code(201).send(name);
 }
-function putBoard(req, res) {
+function putBoard(req: request, res: FastifyReply) {
   const updated = req.body;
   Object.defineProperty(updated, 'id', {
     value: `${req.params.id}`,
     writable: false,
     enumerable: true,
   });
-  const result = arrResBoard.find((record) => record.id === req.params.id);
+  const result: any = arrResBoard.find((record) => record.id === req.params.id);
   arrResBoard.splice(arrResBoard.indexOf(result), 1, updated);
 
   res.send(updated);
 }
-function delBoard(req, res) {
-  const result = arrResBoard.find((record) => record.id === req.params.id);
+function delBoard(req: request, res: FastifyReply) {
+  const result: any = arrResBoard.find((record) => record.id === req.params.id);
 
   const arrResTaskk = arrResTask.filter(
     (record) => record.boardId !== req.params.id

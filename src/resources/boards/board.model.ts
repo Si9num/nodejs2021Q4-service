@@ -5,8 +5,9 @@ import {
   putBoard,
   delBoard,
 } from './board.router';
+import { schema } from '../users/user.model';
 
-const BoardGet = {
+const BoardGet: schema = {
   schema: {
     response: {
       200: {
@@ -32,7 +33,7 @@ const BoardGet = {
 
   handler: getBoard,
 };
-const BoardGetId = {
+const BoardGetId: schema = {
   schema: {
     response: {
       200: {
@@ -54,7 +55,7 @@ const BoardGetId = {
   },
   handler: getIdBoard,
 };
-const BoardPost = {
+const BoardPost: schema = {
   schema: {
     response: {
       201: {
@@ -76,7 +77,7 @@ const BoardPost = {
   },
   handler: postBoard,
 };
-const BoardPut = {
+const BoardPut: schema = {
   schema: {
     response: {
       200: {
@@ -98,7 +99,7 @@ const BoardPut = {
   },
   handler: putBoard,
 };
-const BoardDel = {
+const BoardDel: schema = {
   schema: {
     response: {
       200: {
@@ -121,4 +122,4 @@ const BoardDel = {
   handler: delBoard,
 };
 
-export  { BoardGet, BoardPost, BoardGetId, BoardPut, BoardDel };
+export { BoardGet, BoardPost, BoardGetId, BoardPut, BoardDel };

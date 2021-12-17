@@ -1,6 +1,7 @@
 import { getTask, postTask, getIdTask, putTask, delTask } from './task.router';
+import { schema } from '../users/user.model';
 
-const TaskGet = {
+const TaskGet: schema = {
   schema: {
     response: {
       200: {
@@ -23,7 +24,7 @@ const TaskGet = {
 
   handler: getTask,
 };
-const TaskGetId = {
+const TaskGetId: schema = {
   schema: {
     response: {
       200: {
@@ -42,7 +43,7 @@ const TaskGetId = {
   },
   handler: getIdTask,
 };
-const TaskPost = {
+const TaskPost: schema = {
   schema: {
     response: {
       201: {
@@ -61,7 +62,7 @@ const TaskPost = {
   },
   handler: postTask,
 };
-const TaskPut = {
+const TaskPut: schema = {
   schema: {
     response: {
       200: {
@@ -83,7 +84,7 @@ const TaskPut = {
   },
   handler: putTask,
 };
-const TaskDel = {
+const TaskDel: schema = {
   schema: {
     response: {
       200: {

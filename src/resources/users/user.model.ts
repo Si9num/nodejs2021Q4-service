@@ -1,6 +1,11 @@
+import { FastifyReply, FastifyRequest , FastifySchema } from 'fastify';
 import { getUser, postUser, getIdUser, putUser, delUser } from './user.router';
 
-const UserGet = {
+interface schema {
+  schema: FastifySchema;
+  handler(req: FastifyRequest, res: FastifyReply): void;
+}
+const UserGet: schema = {
   schema: {
     response: {
       200: {
@@ -19,7 +24,7 @@ const UserGet = {
   },
   handler: getUser,
 };
-const UserGetId = {
+const UserGetId: schema = {
   schema: {
     response: {
       200: {
@@ -35,7 +40,7 @@ const UserGetId = {
   },
   handler: getIdUser,
 };
-const UserPost = {
+const UserPost: schema = {
   schema: {
     response: {
       201: {
@@ -51,7 +56,7 @@ const UserPost = {
   },
   handler: postUser,
 };
-const UserPut = {
+const UserPut: schema = {
   schema: {
     response: {
       200: {
@@ -67,7 +72,7 @@ const UserPut = {
   },
   handler: putUser,
 };
-const UserDel = {
+const UserDel: schema = {
   schema: {
     response: {
       200: {
@@ -84,4 +89,4 @@ const UserDel = {
   handler: delUser,
 };
 
-export { UserGet, UserPost, UserGetId, UserPut, UserDel };
+export { UserGet, UserPost, UserGetId, UserPut, UserDel, schema };
