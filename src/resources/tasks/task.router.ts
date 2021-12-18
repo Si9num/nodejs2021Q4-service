@@ -50,14 +50,18 @@ function putTask(req: request, res: FastifyReply) {
     writable: false,
     enumerable: true,
   });
-  const result: any = arrResTask.find((record) => record.id === req.params.id);
-  arrResTask.splice(arrResTask.indexOf(result), 1, updated);
+  const result = arrResTask.find((record) => record.id === req.params.id);
+  if (result !== undefined) {
+    arrResTask.splice(arrResTask.indexOf(result), 1, updated);
+  }
 
   res.send(updated);
 }
 function delTask(req: request, res: FastifyReply) {
-  const result: any = arrResTask.find((record) => record.id === req.params.id);
-  arrResTask.splice(arrResTask.indexOf(result), 1);
+  const result = arrResTask.find((record) => record.id === req.params.id);
+  if (result !== undefined) {
+    arrResTask.splice(arrResTask.indexOf(result), 1);
+  }
   res.send('record was deleted');
 }
 

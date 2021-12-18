@@ -41,14 +41,17 @@ function putUser(req: request, res: FastifyReply) {
     writable: false,
     enumerable: true,
   });
-  const result: any = arrRes.find((record) => record.id === req.params.id);
-  arrRes.splice(arrRes.indexOf(result), 1, updated);
-
+  const result = arrRes.find((record) => record.id === req.params.id);
+  if (result !== undefined) {
+    arrRes.splice(arrRes.indexOf(result), 1, updated);
+  }
   res.send(updated);
 }
 function delUser(req: request, res: FastifyReply) {
-  const result: any = arrRes.find((record) => record.id === req.params.id);
-  arrRes.splice(arrRes.indexOf(result), 1);
+  const result = arrRes.find((record) => record.id === req.params.id);
+  if (result !== undefined) {
+    arrRes.splice(arrRes.indexOf(result), 1);
+  }
 
   res.send('record was deleted');
 }

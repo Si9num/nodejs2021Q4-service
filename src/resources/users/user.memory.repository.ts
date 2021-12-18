@@ -1,8 +1,10 @@
-const arrRes: Array<{
+interface arr {
   id: string;
   name: string;
   login: string;
   password: string;
-}> = [];
+}
 
-export { arrRes };
+const arrRes: arr[] = [];
+
+export { arrRes, arr };
