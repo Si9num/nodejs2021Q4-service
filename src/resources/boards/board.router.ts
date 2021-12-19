@@ -10,17 +10,37 @@ interface request extends FastifyRequest {
   params: { id: string };
 }
 
-function getBoard(req: FastifyRequest, res: FastifyReply) {
+/**
+ This function get a board.
+     *
+     * @param  req - The request object
+     * @param  res - The response object
+ */
+function getBoard(req: FastifyRequest, res: FastifyReply): void {
   res.send(arrResBoard);
 }
-function getIdBoard(req: request, res: FastifyReply) {
+
+/**
+ This function get a boards.
+     *
+     * @param  req - The request object
+     * @param  res - The response object
+ */
+function getIdBoard(req: request, res: FastifyReply): void {
   const result = arrResBoard.find((record) => record.id === req.params.id);
   if (!result) {
     res.code(404).send('not found');
   }
   res.send(result);
 }
-function postBoard(req: request, res: FastifyReply) {
+
+/**
+ This function post a board.
+     *
+     * @param  req - The request object
+     * @param  res - The response object
+ */
+function postBoard(req: request, res: FastifyReply): void {
   const name = req.body;
 
   Object.defineProperty(name, 'id', {
@@ -33,7 +53,14 @@ function postBoard(req: request, res: FastifyReply) {
 
   res.code(201).send(name);
 }
-function putBoard(req: request, res: FastifyReply) {
+
+/**
+ This function update a board.
+     *
+     * @param  req - The request object
+     * @param  res - The response object
+ */
+function putBoard(req: request, res: FastifyReply): void {
   const updated = req.body;
   Object.defineProperty(updated, 'id', {
     value: `${req.params.id}`,
@@ -47,7 +74,14 @@ function putBoard(req: request, res: FastifyReply) {
 
   res.send(updated);
 }
-function delBoard(req: request, res: FastifyReply) {
+
+/**
+ This function delete a board.
+     *
+     * @param  req - The request object
+     * @param  res - The response object
+ */
+function delBoard(req: request, res: FastifyReply): void {
   const result = arrResBoard.find((record) => record.id === req.params.id);
 
   const arrResTaskk = arrResTask.filter(

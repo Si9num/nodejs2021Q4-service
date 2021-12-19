@@ -1,4 +1,4 @@
-import { FastifyReply, FastifyRequest , FastifySchema } from 'fastify';
+import { FastifyReply, FastifyRequest, FastifySchema } from 'fastify';
 import { getUser, postUser, getIdUser, putUser, delUser } from './user.router';
 
 interface schema {

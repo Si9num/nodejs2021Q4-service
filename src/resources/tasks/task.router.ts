@@ -15,17 +15,38 @@ interface request extends FastifyRequest {
   id: string;
   params: { id: string };
 }
-function getTask(req: request, res: FastifyReply) {
+
+/**
+ This function get a task.
+     *
+     * @param  req - The request object
+     * @param  res - The response object
+ */
+function getTask(req: request, res: FastifyReply):void {
   res.send(arrResTask);
 }
-function getIdTask(req: request, res: FastifyReply) {
+
+/**
+ This function get a tasks.
+     *
+     * @param  req - The request object
+     * @param  res - The response object
+ */
+function getIdTask(req: request, res: FastifyReply):void {
   const result = arrResTask.find((record) => record.id === req.params.id);
   if (!result) {
     res.code(404).send('not found');
   }
   res.send(result);
 }
-function postTask(req: request, res: FastifyReply) {
+
+/**
+ This function post a task.
+     *
+     * @param  req - The request object
+     * @param  res - The response object
+ */
+function postTask(req: request, res: FastifyReply):void {
   const name = req.body;
 
   Object.defineProperty(name, 'id', {
@@ -43,7 +64,14 @@ function postTask(req: request, res: FastifyReply) {
 
   res.code(201).send(name);
 }
-function putTask(req: request, res: FastifyReply) {
+
+/**
+ This function update a task.
+     *
+     * @param  req - The request object
+     * @param  res - The response object
+ */
+function putTask(req: request, res: FastifyReply):void {
   const updated = req.body;
   Object.defineProperty(updated, 'id', {
     value: `${req.params.id}`,
@@ -57,7 +85,14 @@ function putTask(req: request, res: FastifyReply) {
 
   res.send(updated);
 }
-function delTask(req: request, res: FastifyReply) {
+
+/**
+ This function delete a task.
+     *
+     * @param  req - The request object
+     * @param  res - The response object
+ */
+function delTask(req: request, res: FastifyReply):void {
   const result = arrResTask.find((record) => record.id === req.params.id);
   if (result !== undefined) {
     arrResTask.splice(arrResTask.indexOf(result), 1);
