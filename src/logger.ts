@@ -2,17 +2,12 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import fs from 'fs';
 
 export default function leveling() {
-  return process.env.LOGGER_VAR === '0'
-    ? 'error'
-    : process.env.LOGGER_VAR === '1'
-    ? 'warn'
-    : process.env.LOGGER_VAR === '2'
-    ? 'info'
-    : process.env.LOGGER_VAR === '3'
-    ? 'debug'
-    : process.env.LOGGER_VAR === '4'
-    ? 'trace'
-    : 'info';
+  const params = ['error', 'warn', 'info', 'debug', 'trace'];
+  let res;
+  if (process.env.LOGGER_VAR !== undefined) {
+    res = params[+process.env.LOGGER_VAR];
+  }
+  return res;
 }
 export function customPar(req: FastifyRequest, res: FastifyReply) {
   const log = req.log.info(

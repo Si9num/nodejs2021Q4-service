@@ -2,9 +2,9 @@ import swaggerUI from 'fastify-swagger';
 import path from 'path';
 import YAML from 'yamljs';
 
+import fastify, { FastifyReply } from 'fastify';
 import { logPar } from './logger';
 
-import fastify, { FastifyReply } from 'fastify';
 import {
   UserGet,
   UserPost,
