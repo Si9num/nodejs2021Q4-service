@@ -1,3 +1,6 @@
+import { FastifyReply, FastifyRequest } from 'fastify';
+import fs from 'fs';
+
 export default function leveling() {
   return process.env.LOGGER_VAR === '0'
     ? 'error'
@@ -8,6 +11,17 @@ export default function leveling() {
     : process.env.LOGGER_VAR === '3'
     ? 'debug'
     : process.env.LOGGER_VAR === '4'
-    ? 'info'
+    ? 'trace'
     : 'info';
 }
+export function customPar(req: FastifyRequest, res: FastifyReply) {
+  const log = req.log.info(
+    { body: req.body, url: req.url, statusCode: res.statusCode },
+    'Log Info'
+  );
+  return log;
+}
+export const logPar = {
+  stream: fs.createWriteStream('./log.txt'),
+  level: `${leveling()}`,
+};

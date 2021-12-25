@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { arrResBoard } from './board.memory.repository';
 import { arrResTask } from '../tasks/task.memory.repository';
+import { customPar } from '../../logger';
 
 interface request extends FastifyRequest {
   body: { id: string; title: string; column: object };
@@ -32,6 +33,7 @@ function getIdBoard(req: request, res: FastifyReply): void {
     res.code(404).send('not found');
   }
   res.send(result);
+  customPar(req, res);
 }
 
 /**
@@ -52,6 +54,7 @@ function postBoard(req: request, res: FastifyReply): void {
   arrResBoard.push(name);
 
   res.code(201).send(name);
+  customPar(req, res);
 }
 
 /**
@@ -73,6 +76,7 @@ function putBoard(req: request, res: FastifyReply): void {
   }
 
   res.send(updated);
+  customPar(req, res);
 }
 
 /**
@@ -96,6 +100,7 @@ function delBoard(req: request, res: FastifyReply): void {
     arrResBoard.splice(arrResBoard.indexOf(result), 1);
   }
   res.send('record was deleted');
+  customPar(req, res);
 }
 
 export { getBoard, postBoard, getIdBoard, putBoard, delBoard };

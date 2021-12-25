@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { v4 as uuidv4 } from 'uuid';
+import { customPar } from '../../logger';
 import { arrResTask } from './task.memory.repository';
 
 interface request extends FastifyRequest {
@@ -38,6 +39,7 @@ function getIdTask(req: request, res: FastifyReply):void {
     res.code(404).send('not found');
   }
   res.send(result);
+  customPar(req,res)
 }
 
 /**
@@ -63,6 +65,7 @@ function postTask(req: request, res: FastifyReply):void {
   arrResTask.push(name);
 
   res.code(201).send(name);
+  customPar(req,res)
 }
 
 /**
@@ -84,6 +87,7 @@ function putTask(req: request, res: FastifyReply):void {
   }
 
   res.send(updated);
+  customPar(req,res)
 }
 
 /**
@@ -98,6 +102,7 @@ function delTask(req: request, res: FastifyReply):void {
     arrResTask.splice(arrResTask.indexOf(result), 1);
   }
   res.send('record was deleted');
+  customPar(req,res)
 }
 
 export { getTask, postTask, getIdTask, putTask, delTask };

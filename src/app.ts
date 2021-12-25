@@ -1,8 +1,8 @@
 import swaggerUI from 'fastify-swagger';
 import path from 'path';
 import YAML from 'yamljs';
-import fs from 'fs';
-import leveling from './logger';
+
+import { logPar } from './logger';
 
 import fastify, { FastifyReply } from 'fastify';
 import {
@@ -27,9 +27,7 @@ import {
   TaskDel,
 } from './resources/tasks/task.model';
 
-const stream = fs.createWriteStream('./log.txt');
-
-const app = fastify({ logger: { stream: stream, level: `${leveling()}` } });
+const app = fastify({ logger: logPar });
 
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 

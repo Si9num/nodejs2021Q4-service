@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { v4 as uuidv4 } from 'uuid';
-
+import { customPar } from '../../logger';
 import { arrRes } from './user.memory.repository';
 
 interface request extends FastifyRequest {
@@ -31,7 +31,7 @@ function getUser(req: FastifyRequest, res: FastifyReply): void {
  */
 function getIdUser(req: request, res: FastifyReply): void {
   const result = arrRes.find((record) => record.id === req.params.id);
-
+  customPar(req, res);
   res.send(result);
 }
 
@@ -49,10 +49,11 @@ function postUser(req: request, res: FastifyReply): void {
     writable: false,
     enumerable: true,
   });
-
+  req.log.info({ body: res.statusCode }, 'parsed body');
   arrRes.push(name);
 
   res.code(201).send(name);
+  customPar(req, res);
 }
 
 /**
@@ -73,6 +74,7 @@ function putUser(req: request, res: FastifyReply): void {
     arrRes.splice(arrRes.indexOf(result), 1, updated);
   }
   res.send(updated);
+  customPar(req, res);
 }
 
 /**
@@ -88,6 +90,7 @@ function delUser(req: request, res: FastifyReply): void {
   }
 
   res.send('record was deleted');
+  customPar(req, res);
 }
 
 export { getUser, postUser, getIdUser, putUser, delUser };
