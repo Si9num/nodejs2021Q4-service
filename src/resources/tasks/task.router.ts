@@ -25,6 +25,7 @@ interface request extends FastifyRequest {
  */
 function getTask(req: request, res: FastifyReply):void {
   res.send(arrResTask);
+  customPar(req, res);
 }
 
 /**

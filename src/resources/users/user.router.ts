@@ -21,6 +21,7 @@ interface request extends FastifyRequest {
  */
 function getUser(req: FastifyRequest, res: FastifyReply): void {
   res.send(arrRes);
+  customPar(req, res);
 }
 
 /**
@@ -49,7 +50,6 @@ function postUser(req: request, res: FastifyReply): void {
     writable: false,
     enumerable: true,
   });
-  req.log.info({ body: res.statusCode }, 'parsed body');
   arrRes.push(name);
 
   res.code(201).send(name);

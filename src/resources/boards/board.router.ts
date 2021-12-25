@@ -19,6 +19,7 @@ interface request extends FastifyRequest {
  */
 function getBoard(req: FastifyRequest, res: FastifyReply): void {
   res.send(arrResBoard);
+  customPar(req, res);
 }
 
 /**
