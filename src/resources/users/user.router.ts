@@ -19,7 +19,7 @@ interface request extends FastifyRequest {
      * @param  req - The request object
      * @param  res - The response object
  */
-function getUser(req: FastifyRequest, res: FastifyReply):void {
+function getUser(req: FastifyRequest, res: FastifyReply): void {
   res.send(arrRes);
 }
 
