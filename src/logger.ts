@@ -9,9 +9,14 @@ export default function leveling() {
   }
   return res;
 }
-export function customPar(req: FastifyRequest, res: FastifyReply) {
+export function customPar(req: FastifyRequest, res: FastifyReply): void {
   const log = req.log.info(
-    { body: req.body, url: req.url, statusCode: res.statusCode },
+    {
+      body: req.body,
+      url: req.url,
+      statusCode: res.statusCode,
+      queryPar: req.query,
+    },
     'Log Info'
   );
   return log;
