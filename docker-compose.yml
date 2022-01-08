@@ -1,0 +1,20 @@
+version: '3.0'
+networks:
+    custom-net:
+        external: true
+services:
+  nodejs2021q4-service:
+    image: nodejs2021q4-service
+    build: .
+    ports:
+      - ${PORT}:${PORT}
+    environment:
+      PORT: ${PORT}
+    networks:
+      - custom-net
+    restart: always
+    volumes:
+      - ./logs:/usr/app/logs
+      - ./:/app
+
+          
