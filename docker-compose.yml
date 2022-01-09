@@ -21,7 +21,7 @@ services:
       
   postgres:
       image: postgres-db
-      build: ./db
+      build: ./volume-db
       ports:
         - ${POSTGRES_PORT}:${POSTGRES_PORT}
       environment:
