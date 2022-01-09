@@ -1,0 +1,7 @@
+{"level":30,"time":1641690645017,"pid":57,"hostname":"4e16c1f560db","msg":"Server listening at http://0.0.0.0:4000"}
+{"level":30,"time":1641690676609,"pid":57,"hostname":"4e16c1f560db","reqId":"req-1","req":{"method":"GET","url":"/users","hostname":"localhost:4000","remoteAddress":"172.19.0.1","remotePort":38320},"msg":"incoming request"}
+{"level":30,"time":1641690676616,"pid":57,"hostname":"4e16c1f560db","reqId":"req-1","body":null,"url":"/users","statusCode":200,"queryPar":{},"msg":"Log Info"}
+{"level":30,"time":1641690676619,"pid":57,"hostname":"4e16c1f560db","reqId":"req-1","res":{"statusCode":200},"responseTime":8.61429999768734,"msg":"request completed"}
+{"level":30,"time":1641690692208,"pid":68,"hostname":"4e16c1f560db","msg":"Server listening at http://0.0.0.0:4000"}
+{"level":30,"time":1641690717265,"pid":79,"hostname":"4e16c1f560db","msg":"Server listening at http://0.0.0.0:4000"}
+{"level":30,"time":1641690727205,"pid":90,"hostname":"4e16c1f560db","msg":"Server listening at http://0.0.0.0:4000"}

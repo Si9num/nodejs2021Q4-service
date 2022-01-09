@@ -7,6 +7,7 @@ export default function leveling(): string {
   if (process.env.LOGGER_VAR !== undefined) {
     res = params[+process.env.LOGGER_VAR];
   }
+
   return res;
 }
 export function customPar(req: FastifyRequest, res: FastifyReply): void {
@@ -22,6 +23,6 @@ export function customPar(req: FastifyRequest, res: FastifyReply): void {
   return log;
 }
 export const logPar = {
-  stream: fs.createWriteStream('./log.txt', { flags: 'a' }),
+  stream: fs.createWriteStream('./volume-logs/log.txt', { flags: 'a' }),
   level: `${leveling()}`,
 };

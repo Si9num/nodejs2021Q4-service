@@ -10,11 +10,28 @@ services:
       - ${PORT}:${PORT}
     environment:
       PORT: ${PORT}
+    depends_on:
+      - postgres
     networks:
       - custom-net
     restart: always
     volumes:
-      - ./logs:/usr/app/logs
-      - ./:/app
+      - ./volume-logs:/si9num/nodejs2021q4-service/logs
+      - ./:/si9num/nodejs2021q4-service/src
+      
+  postgres:
+      image: postgres-db
+      build: ./db
+      ports:
+        - ${POSTGRES_PORT}:${POSTGRES_PORT}
+      environment:
+        POSTGRES_PORT: ${POSTGRES_PORT}
+        POSTGRES_USER: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        POSTGRES_DB: ${POSTGRES_DB}
+      volumes:
+        - ./volume-db:/si9num/nodejs2021q4-service/db
 
-          
+volumes:
+  volume-logs:
+  volume-db:     
