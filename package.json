@@ -54,6 +54,7 @@
     "yamljs": "0.3.0"
   },
   "devDependencies": {
+    "@types/node": "^17.0.8",
     "@types/uuid": "^8.3.3",
     "@types/yamljs": "^0.2.31",
     "@typescript-eslint/eslint-plugin": "^5.6.0",
