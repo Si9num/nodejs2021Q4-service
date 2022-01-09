@@ -1,7 +1,7 @@
 # RS School REST service
 
 ## App with Docker
-Docker(https://docs.docker.com/engine/install/) should be installed
+[Docker](https://docs.docker.com/engine/install/) should be installed
 Use command `docker compose up`
 
 ## Prerequisites
