@@ -3,6 +3,7 @@
 ## App with Docker
 - [Docker](https://docs.docker.com/engine/install/) should be installed
 - Use command `docker compose up`
+- If you have any troubles use command `npm i --save-dev @types/node`
 
 ## Prerequisites
 
