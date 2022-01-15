@@ -1,6 +1,7 @@
 {
     
     "compilerOptions": {
+      "experimentalDecorators": true,
       "module": "commonjs",
       "esModuleInterop": true,
       "target": "es6",
@@ -8,8 +9,8 @@
       "sourceMap": true,
       "outDir": "dist",
       "noImplicitAny": true,
-      "strict":true
-      
+      "strict":true,
+      "emitDecoratorMetadata": true
     },
     
     "lib": ["es2015"]

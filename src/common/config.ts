@@ -13,3 +13,10 @@ const configOpt = {
   AUTH_MODE: process.env.AUTH_MODE === 'true',
 };
 export { configOpt };
+
+
+
+
+
+
+

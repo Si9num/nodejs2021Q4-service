@@ -2,6 +2,8 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { v4 as uuidv4 } from 'uuid';
 import { customPar } from '../../logger';
 import { arrRes } from './user.memory.repository';
+import { User } from '../../../volume-db/user';
+import { createQueryBuilder, QueryBuilder } from 'typeorm';
 
 interface request extends FastifyRequest {
   body: {
@@ -19,8 +21,10 @@ interface request extends FastifyRequest {
      * @param  req - The request object
      * @param  res - The response object
  */
-function getUser(req: FastifyRequest, res: FastifyReply): void {
-  res.send(arrRes);
+async function getUser(req: FastifyRequest, res: FastifyReply): Promise<void> {
+  //res.send(arrRes);
+  const user = await User.find();
+  res.send(user);
   customPar(req, res);
 }
 
@@ -30,10 +34,12 @@ function getUser(req: FastifyRequest, res: FastifyReply): void {
      * @param  req - The request object
      * @param  res - The response object
  */
-function getIdUser(req: request, res: FastifyReply): void {
-  const result = arrRes.find((record) => record.id === req.params.id);
+async function getIdUser(req: request, res: FastifyReply): Promise<void> {
+  //const result = arrRes.find((record) => record.id === req.params.id);
+  const user = await User.findOne(req.params.id);
   customPar(req, res);
-  res.send(result);
+
+  res.send(user);
 }
 
 /**
@@ -44,14 +50,8 @@ function getIdUser(req: request, res: FastifyReply): void {
  */
 function postUser(req: request, res: FastifyReply): void {
   const name = req.body;
-
-  Object.defineProperty(name, 'id', {
-    value: `${uuidv4()}`,
-    writable: false,
-    enumerable: true,
-  });
-  arrRes.push(name);
-
+  const user = User.create(name);
+  user.save();
   res.code(201).send(name);
   customPar(req, res);
 }
@@ -62,18 +62,13 @@ function postUser(req: request, res: FastifyReply): void {
      * @param  req - The request object
      * @param  res - The response object
  */
-function putUser(req: request, res: FastifyReply): void {
-  const updated = req.body;
-  Object.defineProperty(updated, 'id', {
-    value: `${req.params.id}`,
-    writable: false,
-    enumerable: true,
-  });
-  const result = arrRes.find((record) => record.id === req.params.id);
-  if (result !== undefined) {
-    arrRes.splice(arrRes.indexOf(result), 1, updated);
+async function putUser(req: request, res: FastifyReply): Promise<void> {
+  const user = await User.findOne(req.params.id);
+  if (user != undefined) {
+    User.merge(user, req.body);
   }
-  res.send(updated);
+  user?.save();
+  res.send(user);
   customPar(req, res);
 }
 
@@ -83,12 +78,13 @@ function putUser(req: request, res: FastifyReply): void {
      * @param  req - The request object
      * @param  res - The response object
  */
-function delUser(req: request, res: FastifyReply): void {
-  const result = arrRes.find((record) => record.id === req.params.id);
+async function delUser(req: request, res: FastifyReply): Promise<void> {
+  /*const result = arrRes.find((record) => record.id === req.params.id);
   if (result !== undefined) {
     arrRes.splice(arrRes.indexOf(result), 1);
   }
-
+*/
+  await User.delete(req.params.id);
   res.send('record was deleted');
   customPar(req, res);
 }
