@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import { v4 as uuidv4 } from 'uuid';
 import { customPar } from '../../logger';
 import { arrResTask } from './task.memory.repository';
+import { Task } from '../../../volume-db/tasks';
 
 interface request extends FastifyRequest {
   body: {
@@ -9,9 +10,9 @@ interface request extends FastifyRequest {
     title: string;
     order: string;
     description: string;
-    userId: null;
+    userId: string;
     boardId: string;
-    columnId: null;
+    columnId: string;
   };
   id: string;
   params: { id: string };
@@ -23,8 +24,9 @@ interface request extends FastifyRequest {
      * @param  req - The request object
      * @param  res - The response object
  */
-function getTask(req: request, res: FastifyReply):void {
-  res.send(arrResTask);
+async function getTask(req: request, res: FastifyReply): Promise<void> {
+  const task = await Task.find();
+  res.send(task);
   customPar(req, res);
 }
 
@@ -34,13 +36,13 @@ function getTask(req: request, res: FastifyReply):void {
      * @param  req - The request object
      * @param  res - The response object
  */
-function getIdTask(req: request, res: FastifyReply):void {
-  const result = arrResTask.find((record) => record.id === req.params.id);
-  if (!result) {
+async function getIdTask(req: request, res: FastifyReply): Promise<void> {
+  const task = await Task.findOne(req.params.id);
+  if (!task) {
     res.code(404).send('not found');
   }
-  res.send(result);
-  customPar(req,res)
+  res.send(task);
+  customPar(req, res);
 }
 
 /**
@@ -49,24 +51,12 @@ function getIdTask(req: request, res: FastifyReply):void {
      * @param  req - The request object
      * @param  res - The response object
  */
-function postTask(req: request, res: FastifyReply):void {
+async function postTask(req: request, res: FastifyReply): Promise<void> {
   const name = req.body;
-
-  Object.defineProperty(name, 'id', {
-    value: `${uuidv4()}`,
-    writable: false,
-    enumerable: true,
-  });
-  Object.defineProperty(name, 'boardId', {
-    value: `${req.params.id}`,
-    writable: false,
-    enumerable: true,
-  });
-
-  arrResTask.push(name);
-
+  const task = Task.create(name);
+  await task.save();
   res.code(201).send(name);
-  customPar(req,res)
+  customPar(req, res);
 }
 
 /**
@@ -75,20 +65,16 @@ function postTask(req: request, res: FastifyReply):void {
      * @param  req - The request object
      * @param  res - The response object
  */
-function putTask(req: request, res: FastifyReply):void {
+async function putTask(req: request, res: FastifyReply): Promise<void> {
   const updated = req.body;
-  Object.defineProperty(updated, 'id', {
-    value: `${req.params.id}`,
-    writable: false,
-    enumerable: true,
-  });
-  const result = arrResTask.find((record) => record.id === req.params.id);
-  if (result !== undefined) {
-    arrResTask.splice(arrResTask.indexOf(result), 1, updated);
+  const task = await Task.findOne(req.params.id);
+  if (task != undefined) {
+    Task.merge(task, req.body);
   }
+  task?.save();
 
   res.send(updated);
-  customPar(req,res)
+  customPar(req, res);
 }
 
 /**
@@ -97,13 +83,10 @@ function putTask(req: request, res: FastifyReply):void {
      * @param  req - The request object
      * @param  res - The response object
  */
-function delTask(req: request, res: FastifyReply):void {
-  const result = arrResTask.find((record) => record.id === req.params.id);
-  if (result !== undefined) {
-    arrResTask.splice(arrResTask.indexOf(result), 1);
-  }
+async function delTask(req: request, res: FastifyReply): Promise<void> {
+  await Task.delete(req.params.id);
   res.send('record was deleted');
-  customPar(req,res)
+  customPar(req, res);
 }
 
 export { getTask, postTask, getIdTask, putTask, delTask };

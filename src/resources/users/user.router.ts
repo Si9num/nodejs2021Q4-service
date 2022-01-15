@@ -35,10 +35,11 @@ async function getUser(req: FastifyRequest, res: FastifyReply): Promise<void> {
      * @param  res - The response object
  */
 async function getIdUser(req: request, res: FastifyReply): Promise<void> {
-  //const result = arrRes.find((record) => record.id === req.params.id);
   const user = await User.findOne(req.params.id);
+  if (!user) {
+    res.code(404).send('not found');
+  }
   customPar(req, res);
-
   res.send(user);
 }
 
@@ -48,10 +49,10 @@ async function getIdUser(req: request, res: FastifyReply): Promise<void> {
      * @param  req - The request object
      * @param  res - The response object
  */
-function postUser(req: request, res: FastifyReply): void {
+async function postUser(req: request, res: FastifyReply): Promise<void> {
   const name = req.body;
   const user = User.create(name);
-  user.save();
+  await user.save();
   res.code(201).send(name);
   customPar(req, res);
 }
@@ -79,11 +80,6 @@ async function putUser(req: request, res: FastifyReply): Promise<void> {
      * @param  res - The response object
  */
 async function delUser(req: request, res: FastifyReply): Promise<void> {
-  /*const result = arrRes.find((record) => record.id === req.params.id);
-  if (result !== undefined) {
-    arrRes.splice(arrRes.indexOf(result), 1);
-  }
-*/
   await User.delete(req.params.id);
   res.send('record was deleted');
   customPar(req, res);
