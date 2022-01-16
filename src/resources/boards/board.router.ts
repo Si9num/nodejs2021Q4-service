@@ -64,13 +64,12 @@ async function postBoard(req: request, res: FastifyReply): Promise<void> {
      * @param  res - The response object
  */
 async function putBoard(req: request, res: FastifyReply): Promise<void> {
-  const updated = req.body;
-  const board = await Board.findOne(req.params.id);
+  const board = await getRepository(Board).findOne(req.params.id);
   if (board !== undefined) {
-    Board.merge(board, req.body);
+    getRepository(Board).merge(board, req.body);
+    const ress = await getRepository(Board).save(board);
+    res.send(ress);
   }
-  board?.save();
-  res.send(updated);
   customPar(req, res);
 }
 

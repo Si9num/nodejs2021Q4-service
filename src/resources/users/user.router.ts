@@ -1,4 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
+import { getRepository } from 'typeorm';
 
 import { customPar } from '../../logger';
 
@@ -67,12 +68,13 @@ async function postUser(req: request, res: FastifyReply): Promise<void> {
      * @param  res - The response object
  */
 async function putUser(req: request, res: FastifyReply): Promise<void> {
-  const user = await User.findOne(req.params.id);
+  const user = await getRepository(User).findOne(req.params.id);
   if (user !== undefined) {
-    User.merge(user, req.body);
+    getRepository(User).merge(user, req.body);
+    const ress = await getRepository(User).save(user);
+    res.send(ress);
   }
-  user?.save();
-  res.send(user);
+
   customPar(req, res);
 }
 
