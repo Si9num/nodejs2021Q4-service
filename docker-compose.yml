@@ -33,6 +33,8 @@ services:
       POSTGRES_HOST : ${POSTGRES_HOST}
     volumes:
       - ./volume-db:/si9num/nodejs2021q4-service/db
+    networks:
+      - custom-net
 
 volumes:
   volume-logs: null
