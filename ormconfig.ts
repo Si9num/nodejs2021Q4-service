@@ -12,5 +12,9 @@ const config = {
   entities: [User, Board, Task],
   synchronize: true,
   migrations: ['./src/migrations/**/*.ts'],
+  migrationsRun: true,
+  cli: {
+    migrationsDir: './src/migrations',
+  },
 };
 export default config;
