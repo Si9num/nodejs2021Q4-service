@@ -1,10 +1,10 @@
 import { createConnection } from 'typeorm';
-import { User } from './user';
-import { Board } from './board';
-import { Task } from './tasks';
+import { User } from '../src/resources/users/user.memory.repository';
+import { Board } from '../src/resources/boards/board.memory.repository';
+import { Task } from '../src/resources/tasks/task.memory.repository';
 
 async function tt() {
-  const connect = await createConnection({
+  await createConnection({
     type: 'postgres',
     host: 'localhost',
     port: Number(process.env.POSTGRES_PORT),
@@ -13,6 +13,8 @@ async function tt() {
     database: process.env.POSTGRES_DB,
     entities: [User, Board, Task],
     synchronize: true,
+    migrations: ['./src/migrations/**/*.ts'],
   });
 }
-export { tt };
+
+export default tt;

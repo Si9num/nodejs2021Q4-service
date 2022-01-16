@@ -1,9 +1,8 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { v4 as uuidv4 } from 'uuid';
+
 import { customPar } from '../../logger';
-import { arrRes } from './user.memory.repository';
-import { User } from '../../../volume-db/user';
-import { createQueryBuilder, QueryBuilder } from 'typeorm';
+
+import { User } from './user.memory.repository';
 
 interface request extends FastifyRequest {
   body: {
@@ -22,7 +21,7 @@ interface request extends FastifyRequest {
      * @param  res - The response object
  */
 async function getUser(req: FastifyRequest, res: FastifyReply): Promise<void> {
-  //res.send(arrRes);
+  // res.send(arrRes);
   const user = await User.find();
   res.send(user);
   customPar(req, res);
@@ -50,10 +49,14 @@ async function getIdUser(req: request, res: FastifyReply): Promise<void> {
      * @param  res - The response object
  */
 async function postUser(req: request, res: FastifyReply): Promise<void> {
-  const name = req.body;
-  const user = User.create(name);
+  const { name, login, password } = req.body;
+  const user = await User.create({
+    name,
+    login,
+    password,
+  });
   await user.save();
-  res.code(201).send(name);
+  res.code(201).send(user);
   customPar(req, res);
 }
 
@@ -65,7 +68,7 @@ async function postUser(req: request, res: FastifyReply): Promise<void> {
  */
 async function putUser(req: request, res: FastifyReply): Promise<void> {
   const user = await User.findOne(req.params.id);
-  if (user != undefined) {
+  if (user !== undefined) {
     User.merge(user, req.body);
   }
   user?.save();

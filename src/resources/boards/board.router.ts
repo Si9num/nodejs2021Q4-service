@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
-
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { arrResBoard } from './board.memory.repository';
-import { arrResTask } from '../tasks/task.memory.repository';
+import { getRepository } from 'typeorm';
 import { customPar } from '../../logger';
+import { Board } from './board.memory.repository';
+import { Task } from '../tasks/task.memory.repository';
 
 interface request extends FastifyRequest {
-  body: { id: string; title: string; column: object };
+  body: { id: string; title: string; columns: string[] };
   id: string;
   params: { id: string };
 }
@@ -17,8 +17,9 @@ interface request extends FastifyRequest {
      * @param  req - The request object
      * @param  res - The response object
  */
-function getBoard(req: FastifyRequest, res: FastifyReply): void {
-  res.send(arrResBoard);
+async function getBoard(req: FastifyRequest, res: FastifyReply): Promise<void> {
+  const board = await Board.find();
+  res.send(board);
   customPar(req, res);
 }
 
@@ -28,12 +29,12 @@ function getBoard(req: FastifyRequest, res: FastifyReply): void {
      * @param  req - The request object
      * @param  res - The response object
  */
-function getIdBoard(req: request, res: FastifyReply): void {
-  const result = arrResBoard.find((record) => record.id === req.params.id);
-  if (!result) {
+async function getIdBoard(req: request, res: FastifyReply): Promise<void> {
+  const board = await Board.findOne(req.params.id);
+  if (!board) {
     res.code(404).send('not found');
   }
-  res.send(result);
+  res.send(board);
   customPar(req, res);
 }
 
@@ -43,18 +44,16 @@ function getIdBoard(req: request, res: FastifyReply): void {
      * @param  req - The request object
      * @param  res - The response object
  */
-function postBoard(req: request, res: FastifyReply): void {
-  const name = req.body;
+async function postBoard(req: request, res: FastifyReply): Promise<void> {
+  /* const { title, column } = req.body;
+  const board = Board.create({
+    title: title,
+    column: column,
+  }); */
+  const board = await getRepository(Board).create(req.body);
+  const ress = await getRepository(Board).save(board);
 
-  Object.defineProperty(name, 'id', {
-    value: `${uuidv4()}`,
-    writable: false,
-    enumerable: true,
-  });
-
-  arrResBoard.push(name);
-
-  res.code(201).send(name);
+  res.code(201).send(ress);
   customPar(req, res);
 }
 
@@ -64,18 +63,13 @@ function postBoard(req: request, res: FastifyReply): void {
      * @param  req - The request object
      * @param  res - The response object
  */
-function putBoard(req: request, res: FastifyReply): void {
+async function putBoard(req: request, res: FastifyReply): Promise<void> {
   const updated = req.body;
-  Object.defineProperty(updated, 'id', {
-    value: `${req.params.id}`,
-    writable: false,
-    enumerable: true,
-  });
-  const result = arrResBoard.find((record) => record.id === req.params.id);
-  if (result !== undefined) {
-    arrResBoard.splice(arrResBoard.indexOf(result), 1, updated);
+  const board = await Board.findOne(req.params.id);
+  if (board !== undefined) {
+    Board.merge(board, req.body);
   }
-
+  board?.save();
   res.send(updated);
   customPar(req, res);
 }
@@ -86,20 +80,9 @@ function putBoard(req: request, res: FastifyReply): void {
      * @param  req - The request object
      * @param  res - The response object
  */
-function delBoard(req: request, res: FastifyReply): void {
-  const result = arrResBoard.find((record) => record.id === req.params.id);
+async function delBoard(req: request, res: FastifyReply): Promise<void> {
+  await Board.delete(req.params.id);
 
-  const arrResTaskk = arrResTask.filter(
-    (record) => record.boardId !== req.params.id
-  );
-
-  arrResTask.splice(0, arrResTask.length);
-  for (let i = 0; i < arrResTaskk.length; i += 1) {
-    arrResTask.push(arrResTaskk[i]);
-  }
-  if (result !== undefined) {
-    arrResBoard.splice(arrResBoard.indexOf(result), 1);
-  }
   res.send('record was deleted');
   customPar(req, res);
 }

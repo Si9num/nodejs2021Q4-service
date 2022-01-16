@@ -1,14 +1,14 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { v4 as uuidv4 } from 'uuid';
+
 import { customPar } from '../../logger';
-import { arrResTask } from './task.memory.repository';
-import { Task } from '../../../volume-db/tasks';
+
+import { Task } from './task.memory.repository';
 
 interface request extends FastifyRequest {
   body: {
     id: string;
     title: string;
-    order: string;
+    order: number;
     description: string;
     userId: string;
     boardId: string;
@@ -46,16 +46,26 @@ async function getIdTask(req: request, res: FastifyReply): Promise<void> {
 }
 
 /**
+ * 
  This function post a task.
      *
      * @param  req - The request object
      * @param  res - The response object
  */
 async function postTask(req: request, res: FastifyReply): Promise<void> {
-  const name = req.body;
-  const task = Task.create(name);
+  const { title, order, description, columnId, boardId, userId } = req.body;
+  const task = await Task.create({
+    title: title,
+    order: order,
+    description: description,
+    columnId: columnId,
+    boardId: req.params.id,
+    userId: userId,
+  });
   await task.save();
-  res.code(201).send(name);
+  //const task = await getRepository(Task).create(req.body);
+  // const ress = await getRepository(Task).save(task);
+  res.code(201).send(task);
   customPar(req, res);
 }
 
@@ -68,16 +78,16 @@ async function postTask(req: request, res: FastifyReply): Promise<void> {
 async function putTask(req: request, res: FastifyReply): Promise<void> {
   const updated = req.body;
   const task = await Task.findOne(req.params.id);
-  if (task != undefined) {
-    Task.merge(task, req.body);
+  if (task !== undefined) {
+    Task.merge(task, updated);
+    task.save();
   }
-  task?.save();
-
   res.send(updated);
   customPar(req, res);
 }
 
 /**
+ * 
  This function delete a task.
      *
      * @param  req - The request object

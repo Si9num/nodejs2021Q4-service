@@ -12,7 +12,10 @@
     "start": "npx ts-node-dev --poll  src/server.ts   ",
     "lint": "eslint --ext .js,.ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
-    "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"
+    "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace",
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js",
+    "migration:generate": "npm run typeorm migration:generate -- -n migration --config ormconfig.ts",
+    "migration:run": "npm run typeorm migration:run"
   },
   "keywords": [
     "rs",
@@ -55,6 +58,7 @@
     "fastify": "^3.25.3",
     "fastify-swagger": "^4.12.6",
     "pg": "^8.7.1",
+    "reflect-metadata": "^0.1.13",
     "swagger-ui-express": "4.1.6",
     "typeorm": "^0.2.41",
     "uuid": "8.3.2",
