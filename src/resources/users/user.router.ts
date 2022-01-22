@@ -1,5 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { getRepository } from 'typeorm';
+import bcrypt from 'bcrypt';
 
 import { customPar } from '../../logger';
 
@@ -51,11 +52,13 @@ async function getIdUser(req: request, res: FastifyReply): Promise<void> {
  */
 async function postUser(req: request, res: FastifyReply): Promise<void> {
   const { name, login, password } = req.body;
+  const encode = await bcrypt.hash(password, 10);
   const user = await User.create({
     name,
     login,
-    password,
+    password: encode,
   });
+
   await user.save();
   res.code(201).send(user);
   customPar(req, res);

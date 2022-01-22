@@ -11,16 +11,22 @@ import { v4 as uuidv4 } from 'uuid';
 export class Task extends BaseEntity {
   @PrimaryColumn()
   id: string;
+
   @Column()
   title: string;
+
   @Column({ type: 'integer', nullable: true })
   order?: number | null = null;
+
   @Column()
   description: string;
+
   @Column({ type: 'varchar', nullable: true })
   userId: string | null = null;
+
   @Column({ type: 'varchar', nullable: true })
   boardId: string | null = null;
+
   @Column({ type: 'varchar', nullable: true })
   columnId: string | null = null;
 

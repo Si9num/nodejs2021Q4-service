@@ -5,10 +5,13 @@ import { v4 as uuidv4 } from 'uuid';
 export class User extends BaseEntity {
   @PrimaryColumn()
   id: string;
+
   @Column()
   name: string;
+
   @Column()
   login: string;
+
   @Column()
   password: string;
 

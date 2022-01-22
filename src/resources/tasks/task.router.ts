@@ -56,15 +56,15 @@ async function getIdTask(req: request, res: FastifyReply): Promise<void> {
 async function postTask(req: request, res: FastifyReply): Promise<void> {
   const { title, order, description, columnId, boardId, userId } = req.body;
   const task = await Task.create({
-    title: title,
-    order: order,
-    description: description,
-    columnId: columnId,
+    title,
+    order,
+    description,
+    columnId,
     boardId: req.params.id,
-    userId: userId,
+    userId,
   });
   await task.save();
-  //const task = await getRepository(Task).create(req.body);
+  // const task = await getRepository(Task).create(req.body);
   // const ress = await getRepository(Task).save(task);
   res.code(201).send(task);
   customPar(req, res);

@@ -1,4 +1,5 @@
 import { FastifyReply, FastifyRequest, FastifySchema } from 'fastify';
+import { token } from '../login/login.router';
 import { getUser, postUser, getIdUser, putUser, delUser } from './user.router';
 
 interface schema {
@@ -22,6 +23,7 @@ const UserGet: schema = {
       },
     },
   },
+
   handler: getUser,
 };
 const UserGetId: schema = {
@@ -56,6 +58,7 @@ const UserPost: schema = {
   },
   handler: postUser,
 };
+
 const UserPut: schema = {
   schema: {
     response: {

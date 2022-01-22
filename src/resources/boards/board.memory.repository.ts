@@ -11,10 +11,13 @@ import { v4 as uuidv4 } from 'uuid';
 export class Board extends BaseEntity {
   @PrimaryColumn()
   id: string;
+
   @Column()
   title: string;
+
   @Column({ type: 'json', nullable: true })
   columns: string[];
+
   constructor() {
     super();
     this.id = `${uuidv4()}`;
