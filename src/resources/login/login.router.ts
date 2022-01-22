@@ -22,7 +22,9 @@ async function token(req: request, res: FastifyReply) {
     token = jwt.sign({ id, password }, `${process.env.JWT_SECRET_KEY}`);
   }
   if (token) {
-    res.send(token);
+    res
+      .header('Content-Type', 'application/json; charset=utf-8')
+      .send({ token: token });
   } else {
     res.status(403).send('dont exist');
   }

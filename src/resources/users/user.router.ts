@@ -52,11 +52,11 @@ async function getIdUser(req: request, res: FastifyReply): Promise<void> {
  */
 async function postUser(req: request, res: FastifyReply): Promise<void> {
   const { name, login, password } = req.body;
-  const encode = await bcrypt.hash(password, 10);
+  //const encode = await bcrypt.hash(password, 10);
   const user = await User.create({
     name,
     login,
-    password: encode,
+    password,
   });
 
   await user.save();
