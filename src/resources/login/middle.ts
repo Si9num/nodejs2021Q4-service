@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { FastifyReply, FastifyRequest } from 'fastify';
-function verif(req: FastifyRequest, res: FastifyReply, done: any) {
+
+type done = () => void;
+function verif(req: FastifyRequest, res: FastifyReply, done: done) {
   const header = req.headers.authorization;
   if (header !== undefined) {
     const tokenCheck = req.headers.authorization;

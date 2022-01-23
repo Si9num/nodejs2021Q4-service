@@ -1,7 +1,7 @@
-import { User } from '../users/user.memory.repository';
 import * as jwt from 'jsonwebtoken';
 import { getRepository } from 'typeorm';
 import { FastifyReply, FastifyRequest } from 'fastify';
+import { User } from '../users/user.memory.repository';
 
 interface request extends FastifyRequest {
   body: {
@@ -24,7 +24,7 @@ async function createToken(req: request, res: FastifyReply) {
   if (token) {
     res
       .header('Content-Type', 'application/json; charset=utf-8')
-      .send({ token: token });
+      .send({ token });
   } else {
     res.status(403).send('dont exist');
   }

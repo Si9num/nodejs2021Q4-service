@@ -81,7 +81,13 @@ async function putBoard(req: request, res: FastifyReply): Promise<void> {
  */
 async function delBoard(req: request, res: FastifyReply): Promise<void> {
   await Board.delete(req.params.id);
-
+  const id = req.params.id;
+  await getRepository(Task)
+    .createQueryBuilder()
+    .delete()
+    .from(Task)
+    .where('boardId = :id', { id: id })
+    .execute();
   res.send('record was deleted');
   customPar(req, res);
 }
