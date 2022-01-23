@@ -7,12 +7,15 @@
   },
   "type": "commonjs",
   "description": "REST service starter for RS School",
-  "main": "src/server.js",
+  "main": "src/server.ts",
   "scripts": {
-    "start": "nodemon src/server.js",
+    "start": "npx ts-node-dev --poll  src/server.ts   ",
     "lint": "eslint --ext .js,.ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",
-    "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"
+    "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace",
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js",
+    "migration:generate": "npm run typeorm migration:generate -- -n migration --config ormconfig.ts",
+    "migration:run": "npm run typeorm migration:run"
   },
   "keywords": [
     "rs",
@@ -44,10 +47,25 @@
     ]
   },
   "dependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/jsonwebtoken": "^8.5.8",
+    "@types/node": "^17.0.8",
+    "@types/uuid": "^8.3.3",
+    "@types/yamljs": "^0.2.31",
+    "@typescript-eslint/eslint-plugin": "^5.6.0",
+    "@typescript-eslint/parser": "^5.6.0",
+    "bcrypt": "^5.0.1",
     "cross-env": "7.0.3",
     "dotenv": "10.0.0",
     "express": "4.17.1",
+    "fastify": "^3.25.3",
+    "fastify-swagger": "^4.12.6",
+    "jsonwebtoken": "^8.5.1",
+    "middie": "^6.0.0",
+    "pg": "^8.7.1",
+    "reflect-metadata": "^0.1.13",
     "swagger-ui-express": "4.1.6",
+    "typeorm": "^0.2.41",
     "uuid": "8.3.2",
     "yamljs": "0.3.0"
   },
@@ -64,8 +82,11 @@
     "husky": "^4.3.8",
     "jest": "27.3.1",
     "lint-staged": "12.0.3",
-    "nodemon": "2.0.15",
+    "nodemon": "^2.0.15",
     "prettier": "2.4.1",
-    "supertest": "6.1.6"
+    "supertest": "6.1.6",
+    "ts-node": "^10.4.0",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.5.3"
   }
 }
