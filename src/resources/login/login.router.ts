@@ -18,8 +18,9 @@ async function createToken(req: request, res: FastifyReply) {
   const user = await getRepository(User).findOne({ login, password });
   let token;
   if (user) {
-    const { id, password } = user;
-    token = jwt.sign({ id, password }, `${process.env.JWT_SECRET_KEY}`);
+    const password = user.password;
+    const userId = user.id;
+    token = jwt.sign({ userId, password }, `${process.env.JWT_SECRET_KEY}`);
   }
   if (token) {
     res
