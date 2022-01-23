@@ -13,7 +13,7 @@ interface request extends FastifyRequest {
   id: string;
   params: { id: string };
 }
-async function token(req: request, res: FastifyReply) {
+async function createToken(req: request, res: FastifyReply) {
   const { login, password } = req.body;
   const user = await getRepository(User).findOne({ login, password });
   let token;
@@ -29,4 +29,4 @@ async function token(req: request, res: FastifyReply) {
     res.status(403).send('dont exist');
   }
 }
-export { token };
+export { createToken };

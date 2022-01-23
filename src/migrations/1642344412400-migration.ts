@@ -14,7 +14,7 @@ export class migration1642344412400 implements MigrationInterface {
       `CREATE TABLE "user" ("id" character varying NOT NULL, "name" character varying NOT NULL, "login" character varying NOT NULL, "password" character varying NOT NULL, CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`
     );
     await queryRunner.query(
-      `INSERT INTO "user"  VALUES ('admin', 'admin', 'admin')`
+      `INSERT INTO "user"  VALUES ('8926485','admin', 'admin', 'admin')`
     );
   }
 

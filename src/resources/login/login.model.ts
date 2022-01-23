@@ -1,5 +1,5 @@
 import { schema } from '../users/user.model';
-import { token } from './login.router';
+import { createToken } from './login.router';
 
 const login: schema = {
   schema: {
@@ -15,6 +15,6 @@ const login: schema = {
       },
     },
   },
-  handler: token,
+  handler: createToken,
 };
 export { login };

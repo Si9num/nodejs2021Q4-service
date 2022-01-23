@@ -1,5 +1,4 @@
 import { FastifyReply, FastifyRequest, FastifySchema } from 'fastify';
-import { token } from '../login/login.router';
 import { getUser, postUser, getIdUser, putUser, delUser } from './user.router';
 
 interface schema {

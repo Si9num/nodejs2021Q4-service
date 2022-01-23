@@ -38,7 +38,6 @@ app.addHook('preHandler', (req, res, done) => {
   if (req.url !== '/' && req.url !== '/doc' && req.url !== '/login') {
     verif(req, res, done);
   }
-
   done();
 });
 
