@@ -1,29 +1,39 @@
-import { Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { Boarddto } from './nestBoard.dto';
 
 import { NestBoardService } from './nestBoard.service';
 
-@Controller()
+@Controller('/boards')
 export class NestBoardController {
   constructor(private service: NestBoardService) {}
-  @Get('/boards')
-  getUser(req: any, res: any) {
-    return this.service.getBoard(req, res);
+  @Get()
+  async getBoard() {
+    return await this.service.getBoard();
   }
-  @Get('/boards/:id')
-  getIdUser(req: any, res: any) {
-    return this.service.getIdBoard(req, res);
+  @Get(':id')
+  async getIdBoard(@Param('id') id: string) {
+    return await this.service.getIdBoard(id);
   }
-  @Post('/boards')
-  async postUser(req: any, res: any) {
-    return this.service.postBoard(req, res);
+  @Post()
+  async postBoard(@Body() dto: Boarddto) {
+    return await this.service.postBoard(dto);
   }
 
-  @Put('/boards/:id')
-  async putUser(req: any, res: any) {
-    return this.service.putBoard(req, res);
+  @Put(':id')
+  async putBoard(@Param('id') id: string, @Body() dto: Boarddto) {
+    return await this.service.putBoard(id, dto);
   }
-  @Delete('/boards/:id')
-  delUser(req: any, res: any) {
-    return this.service.delBoard(req, res);
+  @Delete(':id')
+  async delBoard(@Param('id') id: string) {
+    await this.service.delBoard(id);
+    return;
   }
 }

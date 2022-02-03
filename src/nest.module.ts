@@ -3,7 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { createConnection } from 'typeorm';
 import { Board } from './resources/boards/board.memory.repository';
 import { NestBoardController } from './resources/boards/nestBoard.controller';
+import { BoardsModule } from './resources/boards/nestBoard.module';
 import { NestBoardService } from './resources/boards/nestBoard.service';
+import { NestLoginController } from './resources/login/nestLogin.controller';
+import { LoginModule } from './resources/login/nestLogin.module';
+import { NestLoginService } from './resources/login/nestLogin.service';
 import { NestTaskController } from './resources/tasks/nestTask.controller';
 import { TasksModule } from './resources/tasks/nestTask.module';
 import { NestTaskService } from './resources/tasks/nestTask.service';
@@ -14,7 +18,6 @@ import { NestUserService } from './resources/users/nestUser.service';
 import { User } from './resources/users/user.memory.repository';
 
 @Module({
-  controllers: [NestBoardController],
   providers: [NestUserService, NestBoardService, NestTaskService],
   imports: [
     TypeOrmModule.forRoot({
@@ -32,7 +35,10 @@ import { User } from './resources/users/user.memory.repository';
         migrationsDir: './src/migrations',
       },
     }),
-    UsersModule,TasksModule
+    UsersModule,
+    TasksModule,
+    BoardsModule,
+    LoginModule,
   ],
 })
 export class NestModules {}

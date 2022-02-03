@@ -1,75 +1,52 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { customPar } from '../../logger';
 
-import { getRepository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 import { FastifyReply } from 'fastify';
 import { Task } from './task.memory.repository';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Taskdto } from './nestTask.dto';
 
 @Injectable()
 export class NestTaskService {
-  async getTask(req: any, res: any) {
-    const task = await Task.find();
-    res.send(task);
-    customPar(req, res);
+  constructor(
+    @InjectRepository(Task)
+    private tasksRepository: Repository<Task>
+  ) {}
+  async getTask() {
+    const task = await this.tasksRepository.find();
+
+    return task;
   }
 
-  /**
-   This function get a tasks.
-       *
-       * @param  req - The request object
-       * @param  res - The response object
-   */
-  async getIdTask(req: any, res: any) {
-    const task = await Task.findOne(req.params.id);
-    if (!task) {
-      res.code(404).send('not found');
+  async getIdTask(id: string) {
+    const task = await this.tasksRepository.findOne(id);
+    if (JSON.stringify(task) === undefined) {
+      throw new HttpException(
+        {
+          status: HttpStatus.NOT_FOUND,
+          error: 'not exist',
+        },
+
+        HttpStatus.NOT_FOUND
+      );
     }
-    res.send(task);
-    customPar(req, res);
+    return task;
   }
 
-  /**
-   * 
-   This function post a task.
-       *
-       * @param  req - The request object
-       * @param  res - The response object
-   */
-  async postTask(req: any, res: any): Promise<void> {
-    const { title, order, description, columnId, boardId, userId } = req.body;
-    const task = await Task.create({
-      title,
-      order,
-      description,
-      columnId,
-      boardId: req.params.id,
-      userId,
-    });
+  async postTask(id: string, dto: Taskdto) {
+    const task = await this.tasksRepository.create(dto);
+    task.boardId = id;
     await task.save();
-    res.code(201).send(task);
-    customPar(req, res);
+    return task;
   }
 
-  async putTask(req: any, res: any) {
-    const task = await getRepository(Task).findOne(req.params.id);
-    if (task !== undefined) {
-      getRepository(Task).merge(task, req.body);
-      const ress = await getRepository(Task).save(task);
-      res.send(ress);
-    }
-    customPar(req, res);
+  async putTask(id: string, dto: Taskdto) {
+    await this.tasksRepository.update(id, dto);
+    return await this.tasksRepository.findOne(id);
   }
 
-  /**
-   * 
-   This function delete a task.
-       *
-       * @param  req - The request object
-       * @param  res - The response object
-   */
-  async delTask(req: any, res: any): Promise<void> {
-    await Task.delete(req.params.id);
-    res.send('record was deleted');
-    customPar(req, res);
+  async delTask(id: string) {
+    return await this.tasksRepository.delete(id);
   }
 }

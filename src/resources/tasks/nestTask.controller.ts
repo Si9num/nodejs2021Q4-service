@@ -11,28 +11,28 @@ import { Taskdto } from './nestTask.dto';
 
 import { NestTaskService } from './nestTask.service';
 
-@Controller('/boards/:id/tasks')
+@Controller('/boards')
 export class NestTaskController {
   constructor(private service: NestTaskService) {}
-  @Get()
-  getUser() {
-    return this.service.getTask();
+  @Get(':boardId/tasks')
+  async getTask() {
+    return await this.service.getTask();
   }
-  @Get('/:id')
-  getIdUser(@Param('id') id: string) {
-    return this.service.getIdTask(id);
+  @Get(':boardId/tasks/:id')
+  async getIdTask(@Param('id') id: string) {
+    return await this.service.getIdTask(id);
   }
-  @Post()
-  async postUser(@Body() dto: Taskdto) {
-    return this.service.postTask(dto);
+  @Post(':boardId/tasks')
+  async postTask(@Param('boardId') id: string, @Body() dto: Taskdto) {
+    return await this.service.postTask(id, dto);
   }
 
-  @Put('/:id')
-  async putUser(@Param('id') id: string, @Body() dto: Taskdto) {
-    return this.service.putTask(id, dto);
+  @Put(':boardId/tasks/:id')
+  async putTask(@Param('id') id: string, @Body() dto: Taskdto) {
+    return await this.service.putTask(id, dto);
   }
-  @Delete('/:id')
-  delUser(@Param('id') id: string) {
-    return this.service.delTask(id);
+  @Delete(':boardId/tasks/:id')
+  async delTask(@Param('id') id: string) {
+    return await this.service.delTask(id);
   }
 }

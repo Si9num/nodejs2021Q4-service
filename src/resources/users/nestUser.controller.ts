@@ -19,24 +19,24 @@ import { Userdto } from './nestUser.dto';
 export class NestUserController {
   constructor(private service: NestUserService) {}
   @Get()
-  getUser() {
-    return this.service.getUser();
+  async getUser() {
+    return await this.service.getUser();
   }
   @Get(':id')
-  getIdUser(@Param('id') id: string) {
-    return this.service.getIdUser(id);
+  async getIdUser(@Param('id') id: string) {
+    return await this.service.getIdUser(id);
   }
   @Post()
   async postUser(@Body() dto: Userdto) {
-    return this.service.postUser(dto);
+    return await this.service.postUser(dto);
   }
 
   @Put(':id')
   async putUser(@Param('id') id: string, @Body() dto: Userdto) {
-    return this.service.putUser(id, dto);
+    return await this.service.putUser(id, dto);
   }
   @Delete(':id')
-  delUser(@Param('id') id: string) {
-    return this.service.delUser(id);
+  async delUser(@Param('id') id: string) {
+    return await this.service.delUser(id);
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { customPar } from '../../logger';
 import { User } from './user.memory.repository';
 import bcrypt from 'bcrypt';
@@ -7,12 +7,17 @@ import { Code, getRepository, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Userdto } from './nestUser.dto';
 import { json } from 'stream/consumers';
+import { async } from 'rxjs';
+import { postUser, putUser, delUser } from './user.router';
+import { Task } from '../tasks/task.memory.repository';
 
 @Injectable()
 export class NestUserService {
   constructor(
     @InjectRepository(User)
-    private usersRepository: Repository<User>
+    private usersRepository: Repository<User>,
+    @InjectRepository(Task)
+    private tasksRepository: Repository<Task>
   ) {}
   getUser() {
     const user = this.usersRepository.find();
@@ -21,32 +26,29 @@ export class NestUserService {
     return user;
   }
 
-  getIdUser(id: string) {
-    const user = this.usersRepository.findOne(id);
-    if (!user) {
-      return 'not found';
-    }
-    return user;
+  async getIdUser(id: string) {
+    const user = await this.usersRepository.findOne(id);
+
+    return await user;
   }
 
   async postUser(dto: Userdto) {
     const encrypt = await bcrypt.hash(dto.password, 10);
-    const user = this.usersRepository.create();
+    const user = await this.usersRepository.create(dto);
     user.password = encrypt;
-    user.save();
+    await user.save();
     let res = JSON.stringify(user);
     let ress = res.slice(0, res.indexOf('"password"') - 1);
     return JSON.parse(ress + '}');
   }
 
   async putUser(id: string, dto: Userdto) {
-    const user = this.usersRepository.findOne(id);
-    if (user !== undefined) {
-      return this.usersRepository.update(id, dto);
-    }
+    await this.usersRepository.update(id, dto);
+    return await this.usersRepository.findOne(id);
   }
 
-  delUser(id: string) {
-    return this.usersRepository.delete(id);
+  async delUser(id: string) {
+    await this.tasksRepository.update({ userId: id }, { userId: null });
+    return await this.usersRepository.delete(id);
   }
 }
